@@ -1,0 +1,140 @@
+---
+API: 3
+OpenSesame: 4.0.24
+Platform: nt
+---
+set width 1024
+set title animais
+set subject_parity even
+set subject_nr 0
+set start experiment
+set sound_sample_size -16
+set sound_freq 48000
+set sound_channels 2
+set sound_buf_size 1024
+set sampler_backend osweb
+set round_decimals 2
+set mouse_backend osweb
+set keyboard_backend osweb
+set height 768
+set fullscreen no
+set form_clicks no
+set foreground white
+set font_underline no
+set font_size 18
+set font_italic False
+set font_family mono
+set font_bold False
+set experiment_path None
+set disable_garbage_collection False
+set description "The main experiment item"
+set color_backend osweb
+set clock_backend osweb
+set canvas_backend osweb
+set background "#3d3846"
+
+define sketchpad Bemvindo
+	set start_response_interval no
+	set reset_variables no
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=serif font_italic=no font_size=60 html=yes show_if=True text="Bem vindo" x=-12.0 y=-29.0 z_index=0
+	draw textline center=1 color=white font_bold=no font_family=serif font_italic=no font_size=25 html=yes show_if=True text="clique na tecla espaco para continuar" x=25.0 y=310.0 z_index=0
+
+define sketchpad animal_sketchpad
+	set duration 0
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=55 html=yes show_if=True text="[animal]" x=0.0 y=0.0 z_index=0
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=50 html=yes show_if=True text="" x=-64 y=-96 z_index=0
+
+define sequence experiment
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run Bemvindo True
+	run intrucoesnew_sketchpad True
+	run new_1_keyboard_response True
+	run new_loop True
+	run fim_sketchpad True
+
+define sketchpad fim_sketchpad
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=40 html=yes show_if=True text="Obrigada pela sua participacao" x=-32.0 y=-32.0 z_index=0
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=25 html=yes show_if=True text="clique na tecla espaco para sair" x=0.0 y=320.0 z_index=0
+
+define notepad getting_started
+	__note__
+	Welcome to OpenSesame 4.0 "Melodramatic Milgram"!
+	If you are new to OpenSesame, it is a good idea to follow one of the tutorials,
+	which can be found on the documentation site:
+	- <http://osdoc.cogsci.nl/>
+	You can also check out the examples. These can be opened via:
+	- Menu -> Tools -> Example experiments.
+	And feel free to ask for help on the forum:
+	- <http://forum.cogsci.nl/>
+	Have fun with OpenSesame!
+	__end__
+	set description "A simple notepad to document your experiment. This plug-in does nothing."
+
+define sketchpad intrucoesnew_sketchpad
+	set duration 0
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=True text="agora vao ser mostrados nomes de animais no centro da teal.<br />(clique S se forem selvagens e D se domesticos." x=0.0 y=-32.0 z_index=0
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=60 html=yes show_if=True text="" x=-64 y=-64 z_index=0
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=25 html=yes show_if=True text="clique na tecla espaco para continuar<br />" x=0.0 y=352.0 z_index=0
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=37 html=yes show_if=True text="" x=-384 y=224 z_index=0
+
+define keyboard_response new_1_keyboard_response
+	set timeout infinite
+	set flush yes
+	set event_type keypress
+	set duration keypress
+	set description "Collects keyboard responses"
+	set allowed_responses space
+
+define keyboard_response new_keyboard_response
+	set timeout infinite
+	set flush yes
+	set event_type keypress
+	set duration keypress
+	set description "Collects keyboard responses"
+	set allowed_responses "S;D"
+
+define logger new_logger
+	set description "Logs experimental data"
+	set auto_log yes
+
+define loop new_loop
+	set source table
+	set repeat 2
+	set order random
+	set description "Repeatedly runs another item"
+	set cycles 8
+	set continuous no
+	set break_if_on_first yes
+	set break_if False
+	setcycle 0 animal leao
+	setcycle 0 tipo selvagem
+	setcycle 1 animal girafa
+	setcycle 1 tipo selvagem
+	setcycle 2 animal gato
+	setcycle 2 tipo domestico
+	setcycle 3 animal tigre
+	setcycle 3 tipo selvagem
+	setcycle 4 animal cao
+	setcycle 4 tipo domestico
+	setcycle 5 animal hamster
+	setcycle 5 tipo domestico
+	setcycle 6 animal aguia
+	setcycle 6 tipo selvagem
+	setcycle 7 animal "coelho branco"
+	setcycle 7 tipo domestico
+	run new_sequence
+
+define sequence new_sequence
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run animal_sketchpad True
+	run new_keyboard_response True
+	run new_logger True
+
